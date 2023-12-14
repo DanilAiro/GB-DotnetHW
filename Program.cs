@@ -1,74 +1,66 @@
 ﻿//Написать программу-калькулятор, вычисляющую выражения вида a + b, a - b, a / b, a * b,
 //введенные из командной строки, и выводящую результат выполнения на экран.
 
-namespace HW1
-{
-  internal class Program
-  {
-    static void Main(string[] args)
-    {
-      if (args.Length == 0) 
-      {
-        Console.WriteLine("В программу не были переданы аргументы. Необходимо 3 аргумента!");
-        return;
-      }
-      else if (args.Length < 3) 
-      {
-        Console.WriteLine("В программу передано мало аргументов. Необходимо 3 аргумента!");
-        return;
-      }
-      else if (args.Length > 3)
-      {
-        Console.WriteLine("В программу передано много аргументов. Необходимо 3 аргумента!");
-        return;
-      }
+using HW1;
 
-      if (!double.TryParse(args[0], out double arg1))
+internal class Program
+{
+  private static void Main(string[] args)
+  {
+    double arg1;
+    double arg2;
+
+    if (args.Length == 0)
+    {
+      Console.Write("Напишите уравнение: ");
+      try
+      {
+        args = Console.ReadLine().Split();
+      }
+      catch (NullReferenceException e)
+      {
+
+      }
+    }
+
+    if (args.Length < 3)
+    {
+      Console.WriteLine("В программу передано мало аргументов. Необходимо 3 аргумента!");
+      Console.ReadKey();
+      return;
+    }
+    else if (args.Length > 3)
+    {
+      Console.WriteLine("В программу передано много аргументов. Необходимо 3 аргумента!");
+      Console.ReadKey();
+      return;
+    }
+    else
+    {
+      if (!double.TryParse(args[0], out arg1))
       {
         Console.WriteLine($"{args[0]} не является числом. Повторите!");
+        Console.ReadKey();
         return;
       }
 
-      if (!double.TryParse(args[2], out double arg2))
+      if (!double.TryParse(args[2], out arg2))
       {
         Console.WriteLine($"{args[2]} не является числом. Повторите!");
+        Console.ReadKey();
         return;
       }
-
-
-      double result;
-      switch (args[1])
-      {
-        case "+":
-          result = arg1 + arg2;
-          break;
-
-        case "-":
-          result = arg1 - arg2;
-          break;
-
-        case "*":
-          result = arg1 * arg2;
-          break;
-
-        case "/":
-          if (arg2 != 0)
-          {
-            result = arg1 / arg2;
-          }
-          else
-          {
-            Console.WriteLine("На ноль делить нельзя.");
-            return;
-          }
-          break;
-
-        default:
-          Console.WriteLine("Операция не определена. Повторите!");
-          return;
-      }
-
-      Console.WriteLine(result);
     }
+
+    try
+    {
+      Console.WriteLine($"Результат: {arg1} {args[1]} {arg2} = {MyMath.CalculateArgs(arg1, args[1], arg2)}");
+    }
+    catch (Exception e)
+    {
+      Console.WriteLine(e.Message);
+    }
+
+    Console.ReadKey();
   }
 }
